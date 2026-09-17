@@ -54,16 +54,16 @@ export function PinLock({ onUnlock }: PinLockProps) {
       tabIndex={0}
     >
       {/* Background orbs */}
-      <div className="absolute top-1/4 left-1/3 w-72 h-72 rounded-full opacity-20 blur-3xl"
+      <div className="absolute top-1/4 left-1/3 w-72 h-72 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(circle, #c9748a, transparent)' }} />
-      <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full opacity-20 blur-3xl"
+      <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(circle, #f5c9b0, transparent)' }} />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="glass-card rounded-3xl p-10 w-full max-w-sm mx-4 text-center shadow-rose-glow-lg"
+        className="glass-card rounded-3xl p-10 w-full max-w-sm mx-4 text-center shadow-rose-glow-lg relative z-10"
       >
         {/* Icon */}
         <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-soft"
@@ -86,6 +86,20 @@ export function PinLock({ onUnlock }: PinLockProps) {
         <p className="text-sm mb-8" style={{ color: '#a0354f', opacity: 0.8 }}>
           Enter your 4-digit PIN to enter
         </p>
+
+        {/* Hidden numeric input for native mobile keyboard support */}
+        <input
+          type="tel"
+          pattern="[0-9]*"
+          inputMode="numeric"
+          className="opacity-0 absolute w-0 h-0 pointer-events-none"
+          autoFocus
+          value=""
+          onChange={(e) => {
+            const char = e.target.value.slice(-1);
+            if (char >= '0' && char <= '9') handleDigit(char);
+          }}
+        />
 
         {/* PIN dots */}
         <motion.div
@@ -125,38 +139,42 @@ export function PinLock({ onUnlock }: PinLockProps) {
           {['1','2','3','4','5','6','7','8','9'].map((d) => (
             <button
               key={d}
+              type="button"
               onClick={() => handleDigit(d)}
-              className="h-14 rounded-2xl font-semibold text-xl transition-all duration-200 active:scale-95"
+              className="h-14 rounded-2xl font-semibold text-xl transition-all duration-150 active:scale-95 touch-manipulation select-none"
               style={{
                 background: 'rgba(160,53,79,0.08)',
                 color: '#4a0f22',
                 border: '1.5px solid rgba(201,116,138,0.2)',
+                touchAction: 'manipulation',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(160,53,79,0.15)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(160,53,79,0.08)')}
             >
               {d}
             </button>
           ))}
           <div /> {/* Empty */}
           <button
+            type="button"
             onClick={() => handleDigit('0')}
-            className="h-14 rounded-2xl font-semibold text-xl transition-all duration-200 active:scale-95"
+            className="h-14 rounded-2xl font-semibold text-xl transition-all duration-150 active:scale-95 touch-manipulation select-none"
             style={{
               background: 'rgba(160,53,79,0.08)',
               color: '#4a0f22',
               border: '1.5px solid rgba(201,116,138,0.2)',
+              touchAction: 'manipulation',
             }}
           >
             0
           </button>
           <button
+            type="button"
             onClick={handleBackspace}
-            className="h-14 rounded-2xl font-semibold text-sm transition-all duration-200 active:scale-95"
+            className="h-14 rounded-2xl font-semibold text-sm transition-all duration-150 active:scale-95 touch-manipulation select-none"
             style={{
               background: 'rgba(160,53,79,0.08)',
               color: '#a0354f',
               border: '1.5px solid rgba(201,116,138,0.2)',
+              touchAction: 'manipulation',
             }}
           >
             ⌫
