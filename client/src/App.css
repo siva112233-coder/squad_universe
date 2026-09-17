@@ -1,19 +1,10 @@
-/* App.css — cleared. All styles are in index.css */
-
-/* Music player: bottom-left on mobile, bottom-right on desktop */
+/* App.css — Music player position & drag styles */
 .music-player {
   position: fixed;
-  bottom: 16px;
-  left: 16px;
+  bottom: 24px;
+  right: 24px;
   z-index: 50;
-  border-radius: 20px;
-}
-
-@media (min-width: 768px) {
-  .music-player {
-    left: auto;
-    right: 24px;
-    bottom: 24px;
-  }
+  touch-action: none;
+  user-select: none;
 }
 

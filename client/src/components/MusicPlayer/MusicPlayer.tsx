@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, Play, Pause, Volume2, VolumeX, ChevronUp, ChevronDown } from 'lucide-react';
+import { Music, Play, Pause, Volume2, VolumeX, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
 
 // 🎵 To change the song:
 // 1. Copy your MP3 into: client/public/  (e.g. client/public/song.mp3)
@@ -63,18 +63,28 @@ export function MusicPlayer() {
 
       <AnimatePresence>
         <motion.div
+          drag
+          dragMomentum={false}
+          whileDrag={{ scale: 1.05 }}
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          className="glass-dark rounded-2xl overflow-hidden shadow-rose-glow-lg"
+          className="glass-dark rounded-2xl overflow-hidden shadow-rose-glow-lg cursor-grab active:cursor-grabbing touch-none select-none"
           style={{ minWidth: isExpanded ? 240 : 'auto' }}
         >
-          {/* Collapsed view */}
-          <div className="flex items-center gap-3 p-3">
-            {/* Animated music icon */}
+          {/* Main view */}
+          <div className="flex items-center gap-2 p-2.5">
+            {/* Drag Handle Indicator */}
+            <div className="text-rose-300/60 pl-1 cursor-grab active:cursor-grabbing" title="Drag me anywhere!">
+              <GripVertical size={16} />
+            </div>
+
+            {/* Play / Pause button */}
             <button
+              onPointerDown={(e) => e.stopPropagation()}
               onClick={togglePlay}
               className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0"
               style={{ background: 'linear-gradient(135deg, #a0354f, #c9748a)' }}
+              title={isPlaying ? 'Pause music' : 'Play music'}
             >
               {isPlaying ? (
                 <Pause size={16} className="text-white" />
@@ -84,7 +94,7 @@ export function MusicPlayer() {
             </button>
 
             {/* Visualizer bars — only when playing */}
-            <div className="flex items-center gap-0.5 h-8">
+            <div className="flex items-center gap-0.5 h-8 px-1">
               {isPlaying ? (
                 [1, 2, 3, 4].map((i) => (
                   <div
@@ -107,6 +117,7 @@ export function MusicPlayer() {
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: 'auto' }}
                 className="flex items-center gap-2"
+                onPointerDown={(e) => e.stopPropagation()}
               >
                 <button onClick={toggleMute} className="text-rose-300 hover:text-white transition-colors">
                   {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -125,8 +136,9 @@ export function MusicPlayer() {
             )}
 
             <button
+              onPointerDown={(e) => e.stopPropagation()}
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-rose-200 hover:text-white transition-colors ml-auto"
+              className="text-rose-200 hover:text-white transition-colors ml-auto p-1"
             >
               {isExpanded ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
             </button>
