@@ -1,0 +1,13 @@
+{
+  "name": "our-squad-universe",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "start": "node server/dist/index.js",
+    "dev": "npm run dev --prefix server"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

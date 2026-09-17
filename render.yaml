@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: our-squad-universe
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: APP_PIN
+        value: "1122"
+      - key: NODE_ENV
+        value: production
