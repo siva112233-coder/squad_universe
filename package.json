@@ -2,7 +2,12 @@
   "name": "our-squad-universe",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
+    "postinstall": "npm install --prefix client --include=dev && npm install --prefix server --include=dev",
     "build": "npm run build --prefix client && npm run build --prefix server",
     "start": "node server/dist/index.js",
     "dev": "npm run dev --prefix server"
